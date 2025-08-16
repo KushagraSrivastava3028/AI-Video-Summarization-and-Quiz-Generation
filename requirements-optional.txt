@@ -1,0 +1,8 @@
+# Optional heavy dependencies. Install if you want local models.
+# pip install -r requirements-optional.txt
+openai-whisper==20231117
+transformers==4.43.3
+sentencepiece==0.2.0
+torch==2.3.1
+librosa==0.10.2.post1
+pydub==0.25.1
