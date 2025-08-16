@@ -1,0 +1,12 @@
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;background:#0b1020;color:#e8eaf6;margin:0;padding:0}
+.container{max-width:900px;margin:40px auto;padding:0 16px}
+h1{font-weight:700;letter-spacing:.3px}
+.card{background:#121933;border:1px solid #243055;border-radius:10px;padding:16px 18px;margin:18px 0;box-shadow:0 6px 20px rgba(0,0,0,.25)}
+input[type=file],textarea{width:100%;margin:8px 0;padding:8px;border-radius:8px;border:1px solid #2a365d;background:#0d1530;color:#e8eaf6}
+button{background:#4f7cff;color:white;border:0;border-radius:8px;padding:10px 16px;cursor:pointer}
+button:hover{background:#6b90ff}
+h2{margin:6px 0 10px}
+#summary{font-size:1.05rem;margin-bottom:10px}
+#highlights{margin:10px 0 20px}
+#quiz section{margin:12px 0;padding:8px 10px;border-left:3px solid #2b3d7c;background:#101833}
+#quiz li.answer{font-weight:600;color:#4fe6a1}

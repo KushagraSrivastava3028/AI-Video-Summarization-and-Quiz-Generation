@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>EduVideo Summarizer & Quiz</title>
+	<link rel="stylesheet" href="/static/styles.css"/>
+</head>
+<body>
+	<div class="container">
+		<h1>EduVideo Summarizer & Quiz</h1>
+		<div class="card">
+			<h2>Upload Video/Audio</h2>
+			<form id="fileForm">
+				<input type="file" name="file" accept="video/*,audio/*" required />
+				<button type="submit">Process</button>
+			</form>
+		</div>
+
+		<div class="card">
+			<h2>Or Paste Text</h2>
+			<form id="textForm">
+				<textarea name="text" rows="6" placeholder="Paste transcript or notes here..."></textarea>
+				<button type="submit">Summarize & Quiz</button>
+			</form>
+		</div>
+
+		<div id="results" class="card" style="display:none">
+			<h2>Results</h2>
+			<div id="summary"></div>
+			<ul id="highlights"></ul>
+			<div id="quiz"></div>
+		</div>
+	</div>
+	<script>
+	async function handleFileForm(e){
+		e.preventDefault();
+		const form = e.target;
+		const data = new FormData(form);
+		document.getElementById('results').style.display='none';
+		const resp = await fetch('/api/process', {method:'POST', body:data});
+		const json = await resp.json();
+		renderResults(json);
+	}
+	async function handleTextForm(e){
+		e.preventDefault();
+		const form = e.target;
+		const text = form.text.value.trim();
+		if(!text){return}
+		document.getElementById('results').style.display='none';
+		const resp = await fetch('/api/process-text', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({text})});
+		const json = await resp.json();
+		renderResults(json);
+	}
+	function renderResults(json){
+		const r = document.getElementById('results');
+		const s = document.getElementById('summary');
+		const h = document.getElementById('highlights');
+		const q = document.getElementById('quiz');
+		if(json.error){ s.textContent = json.error; r.style.display='block'; return; }
+		s.textContent = json.summary || '';
+		h.innerHTML='';
+		(json.highlights||[]).forEach(item=>{
+			const li = document.createElement('li');
+			li.textContent=item;
+			h.appendChild(li);
+		});
+		q.innerHTML='';
+		(json.quiz||[]).forEach((qa, idx)=>{
+			const sect=document.createElement('section');
+			const title=document.createElement('h3');
+			title.textContent = `Q${idx+1}. ${qa.question}`;
+			sect.appendChild(title);
+			const opts=document.createElement('ol');
+			opts.type='A';
+			(qa.options||[]).forEach(opt=>{
+				const li=document.createElement('li');
+				li.textContent=opt;
+				if(opt===qa.answer){ li.className='answer'; }
+				opts.appendChild(li);
+			});
+			sect.appendChild(opts);
+			q.appendChild(sect);
+		});
+		r.style.display='block';
+	}
+	document.getElementById('fileForm').addEventListener('submit', handleFileForm);
+	document.getElementById('textForm').addEventListener('submit', handleTextForm);
+	</script>
+</body>
+</html>
