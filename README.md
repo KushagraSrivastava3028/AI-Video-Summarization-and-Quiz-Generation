@@ -1,4 +1,4 @@
-# EduVideo Summarizer & Quiz Generator
+# AI Video Summarizer & Quiz Generation
 
 This project ingests educational videos, transcribes them, summarizes the content into concise highlights, and generates quizzes to aid comprehension.
 
